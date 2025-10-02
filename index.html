@@ -1,44 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Happy Teacher's Day</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Moving background text -->
-  <div id="floatingText">
-    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
-    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
-    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
-    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
-  </div>
+  <!-- moving repeating background text (JS will populate rows) -->
+  <div id="floatingText" aria-hidden="true"></div>
 
-  <!-- Main greeting text -->
-  <h1 class="main-title">Happy Teacher's Day!</h1>
+  <!-- Top headline -->
+  <header class="top">
+    <h1 class="headline">Happy Teacher’s Day!</h1>
+  </header>
 
-  <!-- Gift Box -->
-  <div class="gift-container">
-    <p class="press-text">Press Me</p>
-    <div id="giftBox"></div>
-  </div>
-
-  <!-- Bouquet + Letter (hidden until click) -->
-  <div id="surprise">
-    <img src="boquete.png" alt="Bouquet" class="bouquet">
-    <div class="note">
-      <h2>Dear Teacher,</h2>
-      <p>
-        Thank you for your endless patience, kindness, and wisdom.  
-        You inspire us not only to learn, but to dream bigger and  
-        become better people every day. 💙  
-      </p>
-      <p class="signature">With love and gratitude,<br>Your Students</p>
+  <!-- Center stage: gift + card/bouquet -->
+  <main class="stage" role="main">
+    <div class="gift-area" aria-hidden="false">
+      <div class="press">Press me</div>
+      <button id="giftBtn" class="gift" aria-label="Open gift">
+        <span class="lid"></span>
+        <span class="ribbon"></span>
+      </button>
     </div>
-  </div>
 
-  <canvas id="confetti"></canvas>
+    <!-- card wrapper: bouquet sits half behind the card -->
+    <section id="cardWrapper" class="card-wrapper" aria-hidden="true">
+      <img src="boquete.png" alt="Bouquet" class="bouquet">
+      <article id="card" class="card" role="dialog" aria-label="Teacher note">
+        <h2 class="card-title">A Small Thank You</h2>
+        <div id="noteText" class="note-text">
+          Dear Teacher,
+
+          Thank you for your guidance, patience, and kindness. You inspire us to dream bigger and to keep learning every day. We are grateful for the time and love you invest in us.
+
+          With love and gratitude,
+          Your Students 💙
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- confetti canvas -->
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
   <script src="script.js"></script>
 </body>
 </html>
