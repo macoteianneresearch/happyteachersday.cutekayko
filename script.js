@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = CANVAS ? CANVAS.getContext('2d') : null;
 
   // ----- 1) Moving background text rows -----
-  const ROWS = 6;
+  const ROWS = 11;
   const PHRASE = "Happy Teacher's Day haha cute • ";
 
   function createRows() {
