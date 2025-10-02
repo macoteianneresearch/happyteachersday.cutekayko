@@ -3,13 +3,13 @@
    ------------------------- */
 *{box-sizing:border-box}
 html,body{height:100%;width:100%;margin:0;padding:0}
-body{
-  font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
-  height:100vh;
-  overflow:hidden; /* no scrolling */
-  background: center/cover no-repeat url("background.png"); /* put your classroom -> background.png */
-  position:relative;
-  color:#0b2540;
+body {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    height: 100vh;
+    overflow: hidden; /* no scrolling */
+    background: url("background.png") center center / cover no-repeat; /* Correct order */
+    position: relative;
+    color: #0b2540;
 }
 
 /* -------------------------
