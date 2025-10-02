@@ -115,6 +115,11 @@ body{
 /* visible card */
 .card.visible{opacity:1; transform:translateY(0) scale(1)}
 
+#card {
+  background-color: rgba(255, 255, 255, 0.85); /* semi-transparent white */
+  /* keep any other styles you already have */
+}
+
 /* card title & handwritten note */
 .card-title{font-family:"Poppins",sans-serif;font-weight:700;color:#153248;margin:0 0 8px 0}
 .note-text{
