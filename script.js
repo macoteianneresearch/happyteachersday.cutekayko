@@ -1,56 +1,42 @@
-function openLetter() {
-  document.getElementById('letter').style.display = 'block';
-  startConfetti();
-}
+const giftBox = document.querySelector('.gift-box');
+const noteContainer = document.querySelector('.note-container');
+const backgroundText = document.querySelector('.background-text');
 
-// Confetti animation
-const confetti = document.getElementById('confetti');
-const ctx = confetti.getContext('2d');
-confetti.width = window.innerWidth;
-confetti.height = window.innerHeight;
+// Fill background with repeated text
+let text = "Happy Teacher's Day haha cute • ";
+backgroundText.textContent = text.repeat(300);
 
-let pieces = [];
-for (let i = 0; i < 200; i++) {
-  pieces.push({
-    x: Math.random() * confetti.width,
-    y: Math.random() * confetti.height - confetti.height,
-    r: Math.random() * 6 + 4,
-    d: Math.random() * 100 + 10,
-    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-    tilt: Math.random() * 10 - 10
-  });
-}
+giftBox.addEventListener('click', () => {
+  noteContainer.classList.add('show');
+  launchConfetti();
+});
 
-function drawConfetti() {
-  ctx.clearRect(0, 0, confetti.width, confetti.height);
-  for (let i = 0; i < pieces.length; i++) {
-    let p = pieces[i];
-    ctx.beginPath();
-    ctx.fillStyle = p.color;
-    ctx.fillRect(p.x, p.y, p.r, p.r);
-    ctx.fill();
-  }
-  update();
-}
+// Confetti effect
+function launchConfetti() {
+  const duration = 2 * 1000;
+  const end = Date.now() + duration;
 
-function update() {
-  for (let i = 0; i < pieces.length; i++) {
-    let p = pieces[i];
-    p.y += Math.cos(p.d) + 1 + p.r / 2;
-    p.x += Math.sin(p.d);
-    if (p.y > confetti.height) {
-      pieces[i] = {
-        x: Math.random() * confetti.width,
-        y: -10,
-        r: p.r,
-        d: p.d,
-        color: p.color,
-        tilt: p.tilt
-      };
+  (function frame() {
+    confetti({
+      particleCount: 6,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 6,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
     }
-  }
+  })();
 }
 
-function startConfetti() {
-  setInterval(drawConfetti, 20);
-}
+// Load confetti library
+const script = document.createElement('script');
+script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js";
+document.head.appendChild(script);
