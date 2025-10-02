@@ -1,124 +1,137 @@
-/* -------------- Reset & Base -------------- */
-* { box-sizing: border-box; }
-html,body{height:100%;width:100%;margin:0;padding:0}
-body{
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  color: #083047;
-  height:100vh;
-  overflow:hidden; /* no scrolling */
-  /* background image (your classroom) - correct order: url first */
-  background: url("background.png") center center / cover no-repeat;
-  position:relative;
+/* script.js
+   - popuplates moving background text strips
+   - opens gift, reveals card, shows confetti
+   - expects: background.png and boquete.png in same folder
+*/
+
+// Elements
+const FLOAT = document.getElementById('floatingText');
+const GIFT = document.getElementById('giftBtn');
+const CARD = document.getElementById('card');
+const WRAPPER = document.getElementById('cardWrapper');
+const CANVAS = document.getElementById('confettiCanvas');
+const ctx = CANVAS.getContext && CANVAS.getContext('2d');
+
+// ----- 1) Create repeating moving rows to fill bg -----
+// number of horizontal rows to cover background visually
+const ROWS = 6;
+const PHRASE = "Happy Teacher's Day haha cute • ";
+
+function createRows(){
+  // clear if exist
+  FLOAT.innerHTML = "";
+  for(let r=0;r<ROWS;r++){
+    const row = document.createElement('div');
+    row.className = 'f-strip';
+    // set vertical placement and font-size variety
+    row.style.top = `${(r/ROWS)*100}%`;
+    row.style.height = `${100/ROWS}%`;
+    // alternate direction and speed
+    const speed = 18 + (r % 3) * 6 + Math.random()*6; // seconds
+    row.style.animation = `${r % 2 === 0 ? 'slideLeft' : 'slideRight'} ${speed}s linear infinite`;
+    row.style.animationDelay = `${-Math.random()*speed}s`;
+    // build long content (enough repeats to fill 200% width)
+    const repeats = 40;
+    for(let i=0;i<repeats;i++){
+      const span = document.createElement('span');
+      span.textContent = PHRASE;
+      // slight random font size per row for texture
+      span.style.fontSize = `${14 + Math.round(Math.random()*20)}px`;
+      row.appendChild(span);
+    }
+    FLOAT.appendChild(row);
+  }
 }
 
-/* -------------- Floating repeating text -------------- */
-/* container holds multiple rows that loop horizontally */
-#floatingText {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
+// define keyframes via injected style so slideLeft/Right exist
+(function injectKeyframes(){
+  const s = document.createElement('style');
+  s.innerHTML = `
+    @keyframes slideLeft { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes slideRight{ from{transform:translateX(-50%)} to{transform:translateX(0)} }
+  `;
+  document.head.appendChild(s);
+})();
+
+createRows();
+
+// ----- 2) Resize handling for confetti canvas -----
+function resizeCanvas(){
+  if (!CANVAS) return;
+  CANVAS.width = window.innerWidth;
+  CANVAS.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// ----- 3) Gift open: animate and reveal card -----
+// gift button visual: add .open class to animate lid (css uses .gift.open)
+GIFT.addEventListener('click', () => {
+  GIFT.classList.add('open');
+  // show card (ensure card exists)
+  setTimeout(()=> {
+    if (CARD) {
+      CARD.classList.add('visible');
+      WRAPPER.setAttribute('aria-hidden','false');
+    }
+    // start confetti burst
+    startConfettiBurst();
+  }, 520);
+});
+
+// ----- 4) Lightweight confetti particle system -----
+let particles = [];
+function random(min,max){ return Math.random()*(max-min)+min; }
+
+function spawnConfetti(amount=220){
+  particles = [];
+  for(let i=0;i<amount;i++){
+    particles.push({
+      x: random(0, CANVAS.width),
+      y: random(-CANVAS.height, 0),
+      vx: random(-2.5, 2.5),
+      vy: random(2, 6),
+      size: random(6, 14),
+      rot: random(0, Math.PI*2),
+      color: `hsl(${Math.floor(random(0,360))},70%,55%)`,
+      life: Math.floor(random(80, 240))
+    });
+  }
 }
 
-/* each row is a long strip (200%) animated left; JS creates rows */
-.f-strip{
-  position: absolute;
-  left: 0;
-  width: 200%;
-  display: flex;
-  gap: 2.2rem;
-  white-space: nowrap;
-  transform: translate3d(0,0,0);
-}
-.f-strip span {
-  display:inline-block;
-  color: transparent;
-  -webkit-text-stroke: 0.6px rgba(255,255,255,0.85); /* hollow outlined look */
-  text-stroke: 0.6px rgba(255,255,255,0.85);
-  opacity: 0.9;
-  user-select: none;
-  pointer-events: none;
-  font-weight:700;
-}
+function drawConfetti(){
+  if (!ctx) return;
+  ctx.clearRect(0,0,CANVAS.width,CANVAS.height);
+  particles.forEach((p, idx) => {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+    ctx.restore();
 
-/* default animation; JS varies row speed/direction */
-@keyframes slideLeft { from{transform: translateX(0)} to{transform: translateX(-50%)} }
-@keyframes slideRight{ from{transform: translateX(-50%)} to{transform: translateX(0)} }
-
-/* -------------- Top headline -------------- */
-.top{position:fixed;top:28px;left:0;right:0;z-index:6;display:flex;justify-content:center;pointer-events:none}
-.headline{
-  margin:0;
-  font-size:clamp(30px,6.8vw,72px);
-  font-weight:800;
-  color:#fff;
-  text-shadow:0 10px 30px rgba(0,0,0,0.55);
-  letter-spacing:0.4px;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.03; // gravity
+    p.rot += 0.07;
+    p.life--;
+    if (p.life <= 0 || p.y > CANVAS.height + 50) {
+      // recycle
+      p.x = random(0, CANVAS.width);
+      p.y = -10;
+      p.life = Math.floor(random(80,240));
+      p.vx = random(-2.5,2.5);
+      p.vy = random(2,6);
+    }
+  });
+  if (particles.length) requestAnimationFrame(drawConfetti);
 }
 
-/* -------------- Stage: gift + card wrapper -------------- */
-.stage{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:8}
-
-/* gift area */
-.gift-area{display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:auto}
-.press{background:linear-gradient(90deg,#ffd36b,#ff9b6b);padding:6px 12px;border-radius:999px;font-weight:700;box-shadow:0 10px 22px rgba(0,0,0,0.16);color:#14303d}
-.gift{width:14.5vh;min-width:110px;height:14.5vh;min-height:110px;border-radius:14px;background:linear-gradient(135deg,#1e90ff,#2bb3ff);border:0;cursor:pointer;position:relative;display:grid;place-items:center;transition:transform .12s}
-.gift:active{transform:scale(.98)}
-.gift .lid{position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:calc(100% + 20px);height:38px;background:linear-gradient(135deg,#163a6a,#2b6fb0);border-radius:10px;transition:transform .6s cubic-bezier(.2,.9,.2,1)}
-.gift.open .lid{transform:translateX(-50%) translateY(-86px) rotate(-14deg)}
-.gift .ribbon{position:absolute;left:50%;top:26%;width:18px;height:54px;transform:translateX(-50%);background:linear-gradient(180deg,#ff6b6b,#ff9a9a);border-radius:6px}
-
-/* card wrapper: center area containing bouquet + card */
-.card-wrapper{position:relative;display:flex;align-items:center;justify-content:center;gap:24px;pointer-events:none;width:100%;max-width:1200px}
-
-/* bouquet (BIG, slanted, half behind card) */
-.bouquet{
-  position:absolute;
-  left:calc(50% - 46vw); /* pushes bouquet near the left side of card + center */
-  top:50%;
-  transform:translateY(-50%) rotate(-12deg);
-  width:clamp(260px,32vw,520px);
-  max-height:80vh;
-  object-fit:contain;
-  z-index:7;
-  filter:drop-shadow(0 14px 30px rgba(0,0,0,0.35));
-  pointer-events:none;
-}
-
-/* card (note) */
-.card{
-  pointer-events:auto;
-  width:clamp(320px,46vw,780px);
-  max-width:92vw;
-  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
-  padding:clamp(18px,2.4vh,36px);
-  border-radius:16px;
-  box-shadow:0 26px 70px rgba(11,37,64,0.45);
-  opacity:0;
-  transform:translateY(12px) scale(.98);
-  transition:opacity .5s ease, transform .5s ease;
-  z-index:9;
-  text-align:left;
-}
-
-/* visible card */
-.card.visible{opacity:1; transform:translateY(0) scale(1)}
-
-/* card title & handwritten note */
-.card-title{font-family:"Poppins",sans-serif;font-weight:700;color:#153248;margin:0 0 8px 0}
-.note-text{
-  font-family:"Dancing Script",cursive;
-  font-size:clamp(16px,2.0vh,20px);
-  line-height:1.55;
-  color:#123239;
-  white-space:pre-wrap;
-}
-
-/* responsive tweaks */
-@media (max-width:880px){
-  .bouquet{left:calc(50% - 36vw); width:34vw}
-  .card{width:86vw;padding:18px}
-  .gift{width:13.5vh;height:13.5vh}
-  .headline{font-size:clamp(22px,7vw,44px)}
+let confettiTimeout = null;
+function startConfettiBurst(){
+  spawnConfetti(240);
+  drawConfetti();
+  // stop after ~3.5s by clearing particles
+  clearTimeout(confettiTimeout);
+  confettiTimeout = setTimeout(()=> { particles = []; if (ctx) ctx.clearRect(0,0,CANVAS.width,CANVAS.height); }, 3500);
 }
