@@ -12,77 +12,74 @@ body {
   font-family: 'Poppins', sans-serif;
   color: white;
   position: relative;
+
+  /* Animated text background */
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.12) 0%,
+    rgba(255,255,255,0.12) 20px,
+    transparent 20px,
+    transparent 40px
+  );
 }
 
-/* Moving background text */
-.background-text {
+/* Add moving text effect over background */
+body::before {
+  content: "Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • ";
   position: absolute;
   top: 0;
   left: 0;
   width: 200%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  animation: move 20s linear infinite;
   font-size: 2rem;
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(255,255,255,0.15);
   white-space: nowrap;
+  animation: movebg 20s linear infinite;
+  z-index: 0;
 }
 
-.background-text p {
-  margin: 0;
-}
-
-@keyframes move {
+@keyframes movebg {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
-/* Main content */
-.content {
+/* Make sure content stays on top */
+h1, p, .note, button {
   position: relative;
   z-index: 2;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
+/* Headline styling */
 h1 {
-  font-size: 3.5rem;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+  font-size: 3rem;
+  text-align: center;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
   margin-bottom: 20px;
 }
 
-/* Note container */
-.note-container {
-  position: relative;
-  width: 600px;
-  max-width: 90%;
-}
-
-.note {
-  background: #fff8dc;
-  padding: 25px;
-  border-radius: 10px;
+/* Style handwritten note */
+p {
   font-family: 'Pacifico', cursive;
+  background: #fff8dc;
+  padding: 20px;
+  border-radius: 10px;
   color: #333;
+  max-width: 600px;
+  margin: 0 auto;
   font-size: 1.2rem;
   line-height: 1.6;
-  position: relative;
-  z-index: 2;
 }
 
 /* Bouquet image */
-.bouquet {
+body::after {
+  content: "";
   position: absolute;
-  left: -80px;
-  top: 30px;
-  width: 250px;
-  transform: rotate(-15deg);
+  top: 50%;
+  left: 5%;
+  width: 300px;
+  height: 300px;
+  background: url('boquete.png') no-repeat center/contain;
+  transform: rotate(-15deg) translateY(-50%);
   z-index: 1;
   opacity: 0.9;
 }
