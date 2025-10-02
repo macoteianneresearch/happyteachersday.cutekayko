@@ -2,33 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Happy Teacher's Day</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Teacher’s Day</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Pacifico&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="background-text"></div>
-
-  <h1 class="main-title">Happy Teacher's Day!</h1>
-
-  <div class="gift-container">
-    <p class="press-me">Press Me 🎁</p>
-    <div class="gift-box"></div>
-    <div class="note-container hidden">
-      <img src="boquete.png" alt="Bouquet" class="bouquet">
-      <div class="note">
-        <p>Dear Teacher,</p>
-        <p>
-          Thank you for being our guiding light and inspiration. 
-          Your patience, kindness, and wisdom make a lasting impact 
-          in our lives. We will always be grateful for your dedication 
-          and love in teaching us. 💙
-        </p>
-        <p>Happy Teacher’s Day!</p>
-      </div>
+  <div class="container">
+    <h1>Happy Teacher's Day!</h1>
+    <button id="giftBtn">Press Me 🎁</button>
+    <div class="note">
+      <p>Thank you for being our guiding light and inspiration. Your patience, kindness, and wisdom make a lasting impact in our lives. We will always be grateful for your dedication and love in teaching us. 💙</p>
     </div>
   </div>
 
-  <canvas id="confetti-canvas"></canvas>
-  <script src="script.js"></script>
+  <script>
+    document.getElementById("giftBtn").addEventListener("click", () => {
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
 </html>
