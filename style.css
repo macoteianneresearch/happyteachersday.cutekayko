@@ -1,0 +1,115 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: url('background.png') no-repeat center center/cover;
+}
+
+.moving-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  font-size: 40px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.08);
+  line-height: 1.2;
+  white-space: pre-wrap;
+  pointer-events: none;
+  animation: moveBg 20s linear infinite;
+}
+
+.moving-background::before {
+  content: "Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • ";
+  display: block;
+  width: 100%;
+  height: 100%;
+  white-space: normal;
+}
+
+@keyframes moveBg {
+  0% { transform: translate(0,0); }
+  100% { transform: translate(-20%, -20%); }
+}
+
+.main-title {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 70px;
+  color: #fff;
+  text-shadow: 3px 3px 8px #000;
+}
+
+.gift-section {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.press-me {
+  font-size: 26px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.gift-box {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #007BFF, #00CFFF);
+  margin: 20px auto;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.gift-box:hover {
+  transform: scale(1.1);
+}
+
+.letter-container {
+  display: none;
+  position: relative;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
+  animation: fadeIn 1s ease forwards;
+  font-family: 'Indie Flower', cursive;
+  font-size: 24px;
+  line-height: 1.7;
+  z-index: 5;
+}
+
+.bouquet {
+  position: absolute;
+  left: -180px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-10deg);
+  width: 400px;
+  z-index: 1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+canvas#confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
