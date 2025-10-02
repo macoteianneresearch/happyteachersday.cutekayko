@@ -2,32 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Teacher's Day</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="moving-background"></div>
+  <div class="background-text"></div>
 
   <h1 class="main-title">Happy Teacher's Day!</h1>
 
-  <div class="gift-section">
-    <p class="press-me">Press Me</p>
-    <div class="gift-box" onclick="openLetter()"></div>
-  </div>
-
-  <div class="letter-container" id="letter">
-    <img src="bouquet.png" class="bouquet">
-    <div class="letter-content">
-      <p>Dear Teacher,</p>
-      <p>You’ve touched our lives in so many ways, and today we celebrate the heart you put into teaching. We appreciate you more than words can say. 💙</p>
-      <p>With love,</p>
-      <p>Your Students</p>
+  <div class="gift-container">
+    <p class="press-me">Press Me 🎁</p>
+    <div class="gift-box"></div>
+    <div class="note-container hidden">
+      <img src="boquete.png" alt="Bouquet" class="bouquet">
+      <div class="note">
+        <p>Dear Teacher,</p>
+        <p>
+          Thank you for being our guiding light and inspiration. 
+          Your patience, kindness, and wisdom make a lasting impact 
+          in our lives. We will always be grateful for your dedication 
+          and love in teaching us. 💙
+        </p>
+        <p>Happy Teacher’s Day!</p>
+      </div>
     </div>
   </div>
 
-  <canvas id="confetti"></canvas>
+  <canvas id="confetti-canvas"></canvas>
   <script src="script.js"></script>
 </body>
 </html>
