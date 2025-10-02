@@ -109,7 +109,7 @@ body{
 .card-title{font-family:"Poppins",sans-serif;font-weight:700;color:#153248;margin:0 0 8px 0}
 .note-text{
   font-family:"Dancing Script",cursive;
-  font-size:clamp(16px,2.0vh,20px);
+  font-size:clamp(20px,4.0vh,22px);
   line-height:1.55;
   color:#123239;
   white-space:pre-wrap;
