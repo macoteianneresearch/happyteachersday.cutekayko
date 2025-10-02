@@ -2,40 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Teacher’s Day!</title>
+  <title>Happy Teacher's Day</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Moving Background Text -->
-  <div class="background-text">
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-    <p>Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • </p>
-  </div>
+  <div class="background-text"></div>
 
-  <!-- Main Content -->
-  <div class="content">
-    <h1>Happy Teacher’s Day!</h1>
-    
-    <!-- Note with bouquet -->
-    <div class="note-container">
+  <h1 class="main-title">Happy Teacher's Day!</h1>
+
+  <div class="gift-container">
+    <p class="press-me">Press Me 🎁</p>
+    <div class="gift-box"></div>
+    <div class="note-container hidden">
       <img src="boquete.png" alt="Bouquet" class="bouquet">
       <div class="note">
         <p>Dear Teacher,</p>
-        <p>Thank you for being our guiding light and inspiration.  
-        Your patience, kindness, and wisdom make a lasting impact in our lives.  
-        We will always be grateful for your dedication and love in teaching us. 💙</p>
+        <p>
+          Thank you for being our guiding light and inspiration. 
+          Your patience, kindness, and wisdom make a lasting impact 
+          in our lives. We will always be grateful for your dedication 
+          and love in teaching us. 💙
+        </p>
         <p>Happy Teacher’s Day!</p>
       </div>
     </div>
   </div>
+
+  <canvas id="confetti-canvas"></canvas>
+  <script src="script.js"></script>
 </body>
 </html>
