@@ -1,49 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Happy Teacher's Day</title>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <title>Happy Teacher's Day!</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- floating text layer (JS populates many spans) -->
-  <div id="floatingText" aria-hidden="true"></div>
+  <!-- Floating Background Text -->
+  <div id="floatingText">
+    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
+    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
+    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
+    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
+    Happy Teacher's Day haha cute • Happy Teacher's Day haha cute • 
+  </div>
 
-  <!-- main UI -->
-  <header class="top">
-    <h1 class="headline">Happy Teacher’s Day!</h1>
-  </header>
+  <!-- Main Greeting -->
+  <h1 class="main-title">Happy Teacher's Day!</h1>
 
-  <main class="stage" role="main">
-    <div class="gift-area">
-      <div class="press">Press me</div>
-      <button id="giftBtn" class="gift" aria-label="Open gift">
-        <span class="lid"></span>
-        <span class="box"></span>
-        <span class="ribbon"></span>
-      </button>
+  <!-- Gift Section -->
+  <div class="gift-container">
+    <p class="press">Press Me 🎁</p>
+    <div id="giftBox"></div>
+
+    <!-- Hidden Note -->
+    <div id="note">
+      <img src="boquete.png" alt="Bouquet" class="bouquet">
+      <p class="note-text">
+        Thank you for being our guiding light and inspiration.  
+        Your patience, kindness, and wisdom make a lasting impact in our lives.  
+        We will always be grateful for your dedication and love in teaching us. 💙  
+        <br><br>Happy Teacher’s Day!
+      </p>
     </div>
+  </div>
 
-    <!-- card + bouquet wrapper (centered) -->
-    <section id="cardWrapper" class="card-wrapper" aria-hidden="true">
-      <img src="boquete.png" alt="" class="bouquet">
-      <article id="card" class="card" role="dialog" aria-label="Teacher note">
-        <h2 class="card-title">A Small Thank You</h2>
-        <div id="noteText" class="note-text">
-          <!-- JS will write the note in full (no scrolling) -->
-          Thank you for your guidance, patience, and kindness. You inspire us to dream and do our best every single day. We will always be grateful for the love and lessons you share. 💙
-        </div>
-      </article>
-    </section>
-  </main>
-
-  <!-- confetti library + custom script -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <canvas id="confetti"></canvas>
   <script src="script.js"></script>
 </body>
 </html>
