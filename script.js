@@ -1,40 +1,124 @@
-// Surprise Reveal
-const giftBox = document.getElementById("giftBox");
-const surprise = document.getElementById("surprise");
-
-giftBox.addEventListener("click", () => {
-  surprise.style.display = "flex";
-  startConfetti();
-});
-
-// Confetti Animation
-const canvas = document.getElementById("confetti");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const confettiPieces = [];
-for (let i = 0; i < 200; i++) {
-  confettiPieces.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height - canvas.height,
-    w: 5,
-    h: 10,
-    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-    speed: Math.random() * 3 + 2
-  });
+/* -------------- Reset & Base -------------- */
+* { box-sizing: border-box; }
+html,body{height:100%;width:100%;margin:0;padding:0}
+body{
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color: #083047;
+  height:100vh;
+  overflow:hidden; /* no scrolling */
+  /* background image (your classroom) - correct order: url first */
+  background: url("background.png") center center / cover no-repeat;
+  position:relative;
 }
 
-function startConfetti() {
-  function drawConfetti() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    confettiPieces.forEach(p => {
-      ctx.fillStyle = p.color;
-      ctx.fillRect(p.x, p.y, p.w, p.h);
-      p.y += p.speed;
-      if (p.y > canvas.height) p.y = -10;
-    });
-    requestAnimationFrame(drawConfetti);
-  }
-  drawConfetti();
+/* -------------- Floating repeating text -------------- */
+/* container holds multiple rows that loop horizontally */
+#floatingText {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* each row is a long strip (200%) animated left; JS creates rows */
+.f-strip{
+  position: absolute;
+  left: 0;
+  width: 200%;
+  display: flex;
+  gap: 2.2rem;
+  white-space: nowrap;
+  transform: translate3d(0,0,0);
+}
+.f-strip span {
+  display:inline-block;
+  color: transparent;
+  -webkit-text-stroke: 0.6px rgba(255,255,255,0.85); /* hollow outlined look */
+  text-stroke: 0.6px rgba(255,255,255,0.85);
+  opacity: 0.9;
+  user-select: none;
+  pointer-events: none;
+  font-weight:700;
+}
+
+/* default animation; JS varies row speed/direction */
+@keyframes slideLeft { from{transform: translateX(0)} to{transform: translateX(-50%)} }
+@keyframes slideRight{ from{transform: translateX(-50%)} to{transform: translateX(0)} }
+
+/* -------------- Top headline -------------- */
+.top{position:fixed;top:28px;left:0;right:0;z-index:6;display:flex;justify-content:center;pointer-events:none}
+.headline{
+  margin:0;
+  font-size:clamp(30px,6.8vw,72px);
+  font-weight:800;
+  color:#fff;
+  text-shadow:0 10px 30px rgba(0,0,0,0.55);
+  letter-spacing:0.4px;
+}
+
+/* -------------- Stage: gift + card wrapper -------------- */
+.stage{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:8}
+
+/* gift area */
+.gift-area{display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:auto}
+.press{background:linear-gradient(90deg,#ffd36b,#ff9b6b);padding:6px 12px;border-radius:999px;font-weight:700;box-shadow:0 10px 22px rgba(0,0,0,0.16);color:#14303d}
+.gift{width:14.5vh;min-width:110px;height:14.5vh;min-height:110px;border-radius:14px;background:linear-gradient(135deg,#1e90ff,#2bb3ff);border:0;cursor:pointer;position:relative;display:grid;place-items:center;transition:transform .12s}
+.gift:active{transform:scale(.98)}
+.gift .lid{position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:calc(100% + 20px);height:38px;background:linear-gradient(135deg,#163a6a,#2b6fb0);border-radius:10px;transition:transform .6s cubic-bezier(.2,.9,.2,1)}
+.gift.open .lid{transform:translateX(-50%) translateY(-86px) rotate(-14deg)}
+.gift .ribbon{position:absolute;left:50%;top:26%;width:18px;height:54px;transform:translateX(-50%);background:linear-gradient(180deg,#ff6b6b,#ff9a9a);border-radius:6px}
+
+/* card wrapper: center area containing bouquet + card */
+.card-wrapper{position:relative;display:flex;align-items:center;justify-content:center;gap:24px;pointer-events:none;width:100%;max-width:1200px}
+
+/* bouquet (BIG, slanted, half behind card) */
+.bouquet{
+  position:absolute;
+  left:calc(50% - 46vw); /* pushes bouquet near the left side of card + center */
+  top:50%;
+  transform:translateY(-50%) rotate(-12deg);
+  width:clamp(260px,32vw,520px);
+  max-height:80vh;
+  object-fit:contain;
+  z-index:7;
+  filter:drop-shadow(0 14px 30px rgba(0,0,0,0.35));
+  pointer-events:none;
+}
+
+/* card (note) */
+.card{
+  pointer-events:auto;
+  width:clamp(320px,46vw,780px);
+  max-width:92vw;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+  padding:clamp(18px,2.4vh,36px);
+  border-radius:16px;
+  box-shadow:0 26px 70px rgba(11,37,64,0.45);
+  opacity:0;
+  transform:translateY(12px) scale(.98);
+  transition:opacity .5s ease, transform .5s ease;
+  z-index:9;
+  text-align:left;
+}
+
+/* visible card */
+.card.visible{opacity:1; transform:translateY(0) scale(1)}
+
+/* card title & handwritten note */
+.card-title{font-family:"Poppins",sans-serif;font-weight:700;color:#153248;margin:0 0 8px 0}
+.note-text{
+  font-family:"Dancing Script",cursive;
+  font-size:clamp(16px,2.0vh,20px);
+  line-height:1.55;
+  color:#123239;
+  white-space:pre-wrap;
+}
+
+/* responsive tweaks */
+@media (max-width:880px){
+  .bouquet{left:calc(50% - 36vw); width:34vw}
+  .card{width:86vw;padding:18px}
+  .gift{width:13.5vh;height:13.5vh}
+  .headline{font-size:clamp(22px,7vw,44px)}
 }
